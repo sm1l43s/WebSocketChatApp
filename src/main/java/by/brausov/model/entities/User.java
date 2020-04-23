@@ -1,8 +1,8 @@
-package by.brausov.model;
+package by.brausov.model.entities;
 
 public class User {
 
-    private long id;
+    private int id;
     private String name;
     private String password;
     private String status;
@@ -11,18 +11,18 @@ public class User {
 
     }
 
-    public User(long id, String name, String password, String status) {
+    public User(int id, String name, String password, String status) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.status = status;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
