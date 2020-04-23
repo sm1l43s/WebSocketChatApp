@@ -4,6 +4,7 @@ import by.brausov.dao.UserDAO;
 import by.brausov.model.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,27 +18,27 @@ public class UserServiceImpl implements UserService {
         this.userDAO = userDAO;
     }
 
-    @Override
+    @Transactional
     public List<User> allUsers() {
         return userDAO.allUsers();
     }
 
-    @Override
+    @Transactional
     public void add(User user) {
         userDAO.add(user);
     }
 
-    @Override
+    @Transactional
     public void delete(User user) {
         userDAO.delete(user);
     }
 
-    @Override
+    @Transactional
     public void edit(User user) {
         userDAO.edit(user);
     }
 
-    @Override
+    @Transactional
     public User getById(int id) {
         return userDAO.getById(id);
     }

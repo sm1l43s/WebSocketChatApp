@@ -22,14 +22,14 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public ModelAndView user() {
-//        List<User> users = userService.allUsers();
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("users");
-//        modelAndView.addObject("usersList", users);
-//        return modelAndView;
-//    }
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ModelAndView user() {
+        List<User> users = userService.allUsers();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("users");
+        modelAndView.addObject("usersList", users);
+        return modelAndView;
+    }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public ModelAndView editPage(@PathVariable("id") int id) {
@@ -43,15 +43,17 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/user");
         userService.edit(user);
         return modelAndView;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public ModelAndView addPage() {
+        User user = new User();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("add");
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
@@ -66,7 +68,7 @@ public class UserController {
     @RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
     public ModelAndView deleteUser(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/user");
         User user = userService.getById(id);
         userService.delete(user);
         return modelAndView;
