@@ -1,6 +1,7 @@
 package by.brausov.model.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -18,6 +19,10 @@ public class User {
 
     @Column(name = "status")
     private String status;
+
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
 
@@ -62,6 +67,14 @@ public class User {
         this.status = status;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -69,6 +82,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", status='" + status + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

@@ -115,3 +115,29 @@ p {
 #login > p span {
     padding-left: 5px;
 }
+
+.alert {
+    color: #d43d5b;
+    font-size: 14px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.registration  label{
+    display: block;
+    width: 250px;
+    color: #eeeeee;
+    font-weight: bold;
+}
+
+.registration input {
+    width: 249px;
+}
+
+.registration .login {
+    width: 249px !important;
+}
+
+.successful {
+    color: #0e991b;
+}

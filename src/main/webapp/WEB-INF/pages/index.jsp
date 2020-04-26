@@ -51,7 +51,7 @@
     <h1>Chat box</h1>
 
     <div class="start">
-        <input type="text" class="username" placeholder="введите имя">
+        <input type="text" class="username" value="${user.name}" placeholder="введите имя">
         <button id="start">start</button>
     </div>
 

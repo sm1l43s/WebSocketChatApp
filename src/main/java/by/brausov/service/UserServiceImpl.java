@@ -42,4 +42,14 @@ public class UserServiceImpl implements UserService {
     public User getById(int id) {
         return userDAO.getById(id);
     }
+
+    @Transactional
+    public Boolean checkUser(User user) {
+        return userDAO.checkUser(user);
+    }
+
+    @Transactional
+    public User getByLoginAndPassword(User user) {
+        return userDAO.getByLoginAndPassword(user);
+    }
 }
