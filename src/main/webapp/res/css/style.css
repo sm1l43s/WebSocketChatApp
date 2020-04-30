@@ -1,3 +1,4 @@
+/* login page */
 @charset "utf-8";
 /* CSS Document */
 
@@ -76,7 +77,7 @@ p {
     outline:none;
 }
 
-#login form input[type="text"], input[type="password"] {
+#login form input[type="email"], input[type="password"], #name {
     background-color: #3b4148;
     border-radius: 0px 3px 3px 0px;
     -moz-border-radius: 0px 3px 3px 0px;
@@ -85,6 +86,10 @@ p {
     margin-bottom: 1em;
     padding: 0 16px;
     width: 198px;
+}
+
+#name {
+    width: 249px;
 }
 
 #login form input:focus {
@@ -116,6 +121,8 @@ p {
     padding-left: 5px;
 }
 
+/* registration page */
+
 .alert {
     color: #d43d5b;
     font-size: 14px;
@@ -140,4 +147,313 @@ p {
 
 .successful {
     color: #0e991b;
+}
+
+
+/* main page */
+
+* {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: #2c3338;
+}
+
+.wrapper header {
+    width: 100%;
+    height: 50px;
+    padding: 10px 0 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+header nav {
+    width: 80%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.2em;
+    line-height: 50px;
+    color: #545454;
+}
+
+header .logo {
+    line-height: 50px;
+    justify-content: center;
+    vertical-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+    margin-right: 10px;
+}
+
+header .logo a {
+    text-transform: none;
+    text-decoration: none;
+    color: #d44179;
+    padding: 5px;
+    transition: 0.5s ease-in-out;
+}
+
+header .logo span {
+    color: #eeeeee;
+    transition: 0.5s ease-in-out;
+}
+
+header .logo:hover a {
+    color: #ae3361;
+}
+
+header .logo:hover span {
+    color: #ae3361;
+}
+
+header #logout {
+    line-height: 50px;
+    background-color: #ae3361;
+    color: #eeeeee;
+    padding: 0 10px 0 10px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+}
+
+header span:hover #logout {
+    background-color: #d44179;
+    box-shadow: 0 5px 0 #4b1725;
+}
+
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.chatWrapper {
+    width: 65%;
+    height: auto;
+}
+
+.sidebar {
+    width: 30%;
+    background: #eeeeee;
+}
+
+.chatBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 500px;
+    background-color: #eeeeee;
+}
+
+.messages {
+    width: 100%;
+    height: 500px;
+    padding: 20px;
+    overflow: auto;
+}
+
+.messages .msg {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 55%;
+    background-color: aliceblue;
+    border-radius: 10px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+.messages .me {
+    float: right;
+}
+
+.messages .anotherUser {
+    float: left;
+}
+
+.messages .from {
+    text-align: center;
+    line-height: 30px;
+    color: white;
+}
+
+.me .from {
+    background-color: #0e991b;
+}
+
+.anotherUser .from {
+    background-color: #485e99;
+}
+
+.messages .msg .text {
+    padding: 5px 10px 2px 10px;
+}
+
+.messages .msg .timeBlock {
+    text-align: right;
+    color: #606468;
+    padding:  0 10px 5px 0;
+    font-size: 0.6em;
+}
+
+input.msg {
+    display: none;
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #3b4148;
+    border-radius: 5px;
+}
+
+.inputMsg {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1%;
+}
+
+.inputMsg button {
+    width: 18%;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    background: #0e991b;
+    color: #eeeeee;
+    font-weight: bolder;
+    transition: 0.4s ease-in;
+    cursor: pointer;
+}
+
+.inputMsg button:hover {
+    background: #0e911c;
+}
+
+#start {
+    display: block;
+    height: 40px;
+    padding: 10px;
+    margin: 0 auto;
+    margin-bottom: 30%;
+    background-color: #d44179;
+    color: #eeeeee;
+    z-index: 9999;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+#start:hover {
+    background-color: #e24385;
+    box-shadow: 0 2px 5px #3b4148;
+}
+
+.side-panel {
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    left: -360px;
+    background: #3b4148;
+    transition: all 0.5s;
+    width: 320px;
+    height: 100vh;
+    box-shadow: 10px 0 20px rgba(0,0,0,0.4);
+    color: #FFF;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.open {
+    left: 0px;
+}
+
+.side-panel h2 {
+    font-size: 1.3em;
+    font-weight: bolder;
+    border-bottom:2px solid #eeeeee;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.userInfoItems {
+    margin: 10px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.userInfoItems a {
+    background-color: #d44179;
+    padding: 5px;
+    text-transform: none;
+    text-decoration: none;
+    transition: 0.4s ease-in-out;
+}
+
+.close {
+    position: relative;
+    top: 20px;
+    right: 100px;
+}
+
+.userInfoItems:hover a {
+    background-color: #c53f6c;
+}
+
+.back {
+    display: block;
+    background-color: #485e99;
+    width: 249px;
+    padding: 15px;
+    text-decoration: none;
+    text-transform: none;
+    text-align: center;
+}
+
+aside {
+    text-align: center;
+}
+
+.listUsers {
+    width: 100%;
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.listUsers .user {
+    padding: 5px;
+    background-color: #d44179;
+    color: #eeeeee;
+    cursor: pointer;
+    transition: 0.5s ease-in;
+}
+
+.listUsers .user:hover {
+    background-color: #9c334f;
+}
+
+
+
+/* footer */
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
 }

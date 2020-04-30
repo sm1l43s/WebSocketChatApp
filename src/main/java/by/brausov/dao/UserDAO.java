@@ -11,7 +11,8 @@ public interface UserDAO {
     void delete(User user);
     void edit(User user);
     User getById(int id);
-    Boolean checkUser(User user);
-    User getByLoginAndPassword(User user);
-
+    User getByEmail(String email);
+    void setStatusOnline(User user);
+    void setStatusOffline(User user);
+    List<User> allOnlineUsers();
 }

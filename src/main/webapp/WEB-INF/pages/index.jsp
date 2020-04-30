@@ -1,152 +1,101 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Веб приложение "Чат"</title>
-    <link rel="stylesheet" href="res/css/style.css">
-    <style>
-        .chatBox {
-            display: none;
-            width: 600px;
-            height: 300px;
-            overflow: scroll;
-        }
-
-        .messages {
-            width: 500px;
-            padding: 20px;
-            margin: 10px;
-        }
-
-        .messages .from {
-            background-color: #0e991b;
-            text-align: center;
-            line-height: 30px;
-            color: white;
-        }
-
-        .messages .msg {
-            background-color: aliceblue;
-            border-radius: 10px;
-            margin-bottom: 5px;
-            overflow: hidden;
-        }
-
-        .messages .msg .text {
-            padding: 10px;
-        }
-
-        textarea.msg {
-            width: 540px;
-            padding: 10px;
-            resize: none;
-            border: none;
-            box-shadow: 2px 2px 5px 0 inset;
-        }
-
-    </style>
-
+    <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1>Chat box</h1>
 
-    <div class="start">
-        <input type="text" class="username" value="${user.name}" placeholder="введите имя">
-        <button id="start">start</button>
-    </div>
+<div class="wrapper">
+    <div class="side-panel">
+        <div class="userInfoItems">
+            <h2>Информация о профиле</h2>
+        </div>
 
-    <div class="chatBox">
-        <textarea class="msg"></textarea>
-        <div class="messages">
+        <div class="userInfoItems">
+            <span>Логин: </span>
+            <span>${user.name}</span>
+        </div>
 
+        <div class="userInfoItems">
+            <span>Роль: </span>
+            <span>${user.role.roleName}</span>
+        </div>
+
+        <div class="userInfoItems">
+            <span>Статус: </span>
+            <span>${user.status}</span>
+        </div>
+
+        <div class="userInfoItems">
+            <span><a href="/edit/${user.id}">изменить данные профиля</a></span>
         </div>
     </div>
 
+    <header>
+        <div class="logo">
+            <div><a href="/chat"><span>.Web</span>SocketChat</a></div>
+        </div>
+
+        <nav>
+            <span><a href="/chat">Чат</a></span>
+            <span><a href="#" class="sidePanel">Профиль</a></span>
+            <span><a href="#">Контакты</a></span>
+            <c:if test="${user.role.roleName.equals('admin')}">
+                <span><a href="#">Админ панель</a></span>
+            </c:if>
+
+            <span>
+                <c:url value="/logout" var="var"/>
+                <form action="${var}" method="post" >
+                    <input type="hidden" value="${user.id}">
+                    <input id="logout" type="submit" value="Выйти"/>
+                </form>
+            </span>
+        </nav>
+    </header>
+
+    <main>
+        <div class="chatWrapper">
+            <div class="chatBox">
+                <div class="messages"></div>
+
+                <div class="inputMsg">
+                    <input type="text" class="msg">
+                    <button>Отправить</button>
+                </div>
+
+                <div class="start">
+                    <input type="hidden" class="username" value="${user.name}">
+                    <button id="start">Присоединиться к чату</button>
+                </div>
+            </div>
+
+        </div>
+
+        <aside class="sidebar">
+            <h3>В чате: <span id="countOnlineUsers"></span> </h3>
+            <div class="listUsers">
+
+            </div>
+        </aside>
+
+    </main>
+</div>
+
+<footer>
+    <div>
+        <span>Powered by Denis Brausov</span>
+    </div>
+</footer>
+
+
 </body>
 
-<script>
-    let chaUnit = {
-        init() {
-            this.startBox = document.querySelector(".start");
-            this.chatBox = document.querySelector(".chatBox");
-
-            this.startBtn = this.startBox.querySelector("button");
-            this.nameInput = this.startBox.querySelector("input");
-
-            this.msgTextArea = this.chatBox.querySelector("textarea");
-            this.chatMessageContainer = this.chatBox.querySelector(".messages");
-
-            this.bindEvents();
-        },
-
-        bindEvents() {
-            this.startBtn.addEventListener("click", ev => this.openSocket());
-            this.msgTextArea.addEventListener("keyup", e=>{
-                if(e.ctrlKey && e.keyCode == 13 && this.msgTextArea.value != "") {
-                    e.preventDefault();
-                    this.send(this.msgTextArea.value);
-                }
-            })
-        },
-
-        send() {
-            this.sendMessage({
-                name: this.name,
-                text: this.msgTextArea.value
-            });
-        },
-
-        onOpenSock() {
-
-        },
-
-        onMessage(parseMsg) {
-            let msgBlock = document.createElement("div");
-            msgBlock.className = "msg";
-
-            let fromBlock = document.createElement("div");
-            fromBlock.className = "from";
-            fromBlock.innerText = parseMsg.name;
-
-            let textBlock = document.createElement("div");
-            textBlock.className = "text";
-            textBlock.innerText = parseMsg.text;
-
-            msgBlock.appendChild(fromBlock);
-            msgBlock.appendChild(textBlock);
-
-            this.chatMessageContainer.prepend(msgBlock);
-
-
-        },
-
-        onClose() {
-
-        },
-
-        sendMessage(msg) {
-            this.ws.send(JSON.stringify(msg));
-            this.onMessage({name: "I'm", text:msg.text});
-            this.msgTextArea.value = "";
-        },
-
-        openSocket() {
-            this.name = this.nameInput.value;
-            this.ws = new WebSocket("ws://localhost:8080/chat/" + this.name);
-            this.ws.onopen = () => this.onOpenSock();
-            this.ws.onmessage = (e) => this.onMessage(JSON.parse(e.data));
-            this.ws.onclose = () => this.onClose();
-
-
-            this.name = this.nameInput.value;
-            this.startBox.style.display = "none";
-            this.chatBox.style.display = "block";
-        }
-
-    };
-
-    window.addEventListener("load", ev => chaUnit.init());
-
-</script>
+<script src="<c:url value="/res/js/chat.js"/>"></script>
+<script src="<c:url value="/res/js/userOnline.js"/>"></script>
+<script src="<c:url value="/res/js/sidePanel.js"/>"></script>
 
 </html>

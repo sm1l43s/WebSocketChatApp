@@ -39,7 +39,6 @@ public class ChatEndpoint {
     public void onMessage(Session session, final Message msg) {
         msg.setName(this.username);
         sessionList.forEach(s->{
-            System.out.println(msg);
             if(s == this.session) return;
             try {
                 s.getBasicRemote().sendObject(msg);

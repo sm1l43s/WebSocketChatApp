@@ -1,6 +1,5 @@
 package by.brausov.Controler;
 
-import by.brausov.coders.Encryptor;
 import by.brausov.model.entities.Role;
 import by.brausov.model.entities.User;
 import by.brausov.service.UserService;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
-    private String alert = "";
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -46,29 +44,8 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public ModelAndView editUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/user");
+        modelAndView.setViewName("redirect:/chat");
         userService.edit(user);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView addUser() {
-        User user = new User();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("add");
-        modelAndView.addObject("user", user);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView addUser(@ModelAttribute("user") User user) {
-        user.setPassword(Encryptor.encrypt(user.getPassword()));
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
-        Role role = new Role();
-        role.setId(1);
-        user.setRole(role);
-        userService.add(user);
         return modelAndView;
     }
 
@@ -78,29 +55,6 @@ public class UserController {
         modelAndView.setViewName("redirect:/user");
         User user = userService.getById(id);
         userService.delete(user);
-        return modelAndView;
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView checkUsers(@ModelAttribute("user") User user) {
-        ModelAndView modelAndView = new ModelAndView();
-        if (userService.checkUser(user)){
-            ChatControler.setUser(userService.getByLoginAndPassword(user));
-            modelAndView.setViewName("redirect:/chat");
-        } else {
-            alert = "Вы вели неверный логин или пороль!";
-            modelAndView.setViewName("redirect:/");
-        }
-        return  modelAndView;
-    }
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView login() {
-        User user = new User();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        modelAndView.addObject("alert", alert);
-        modelAndView.addObject("user", user);
         return modelAndView;
     }
 

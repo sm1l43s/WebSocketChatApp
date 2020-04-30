@@ -15,17 +15,23 @@
     <form action="${var}" method="POST">
         <input type="hidden" name="id" value="${user.id}">
         <p class="registration">
-            <label>Введите логин:</label>
-            <input type="text" class="login" name="name" id="name" placeholder="Логин">
-        </p>
-        <p class="registration">
-            <label>Введите пороль:</label>
-            <input type="password" name="password" id="password" placeholder="password">
+            <label>Введите адрес электронной почты:</label>
+            <input type="email" class="login" name="email" id="email" placeholder="Электронная почта">
         </p>
 
         <p class="registration">
-            <label>Повторите пороль:</label>
-            <input type="password" id="password2" placeholder="password">
+            <label>Введите логин:</label>
+            <input type="text" name="name" id="name" placeholder="Логин">
+        </p>
+
+        <p class="registration">
+            <label>Введите пароль:</label>
+            <input type="password" name="password" id="password" placeholder="Пароль">
+        </p>
+
+        <p class="registration">
+            <label>Повторите пароль:</label>
+            <input type="password" id="password2" placeholder="Пароль">
         </p>
         <input type="hidden" name="status" value="offline">
         <p><input type="submit" value="Зарегистрироваться" id="btn_submit"></p>

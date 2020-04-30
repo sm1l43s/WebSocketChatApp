@@ -44,12 +44,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public Boolean checkUser(User user) {
-        return userDAO.checkUser(user);
+    public User getByEmail(String email) {
+        return userDAO.getByEmail(email);
     }
 
     @Transactional
-    public User getByLoginAndPassword(User user) {
-        return userDAO.getByLoginAndPassword(user);
+    public void setStatusOnline(User user) { userDAO.setStatusOnline(user);
+    }
+
+    @Transactional
+    public void setStatusOffline(User user) {
+        userDAO.setStatusOffline(user);
+    }
+
+    @Transactional
+    public List<User> allOnlineUsers() {
+        return userDAO.allOnlineUsers();
     }
 }

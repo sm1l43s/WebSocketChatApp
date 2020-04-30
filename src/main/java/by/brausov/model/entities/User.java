@@ -1,7 +1,6 @@
 package by.brausov.model.entities;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -10,6 +9,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "name")
     private String name;
@@ -28,11 +30,20 @@ public class User {
 
     }
 
-    public User(int id, String name, String password, String status) {
-        this.id = id;
+    public User(String email, String name, String password, String status, Role role) {
+        this.email = email;
         this.name = name;
         this.password = password;
         this.status = status;
+        this.role = role;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {
@@ -79,10 +90,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", status='" + status + '\'' +
-                ", role=" + role +
+                ", role=" + role.getRoleName() +
                 '}';
     }
 }

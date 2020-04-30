@@ -1,11 +1,11 @@
 package by.brausov.dao;
 
-import by.brausov.coders.Encryptor;
 import by.brausov.model.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -21,6 +21,9 @@ public class UserDAOImpl implements UserDAO {
     private SessionFactory sessionFactory;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -34,6 +37,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void add(User user) {
         Session session = sessionFactory.getCurrentSession();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         session.persist(user);
     }
 
@@ -45,8 +49,11 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void edit(User user) {
+       User user1 = getById(user.getId());
+       user1.setName(user.getName());
        Session session = sessionFactory.getCurrentSession();
-       session.update(user);
+       session.update(user1);
+
     }
 
     @Override
@@ -56,25 +63,34 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Boolean checkUser(User user) {
+    public User getByEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
-        boolean flag = false;
-        User user1 = getByLoginAndPassword(user);
-
-        if(user1 == null){
-          flag = false;
-        } else if(user.getName().equals(user1.getName())
-                && Encryptor.encrypt(user.getPassword()).equals(user1.getPassword())) flag = true;
-
-        return flag;
+        Query query = session.createQuery("from User user left join fetch user.role where user.email = :email");
+        query.setParameter("email", email);
+        return  (User) query.uniqueResult();
     }
 
     @Override
-    public User getByLoginAndPassword(User user) {
+    public void setStatusOnline(User user) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from User user left join fetch user.role where user.name = :username and  user.password = :password");
-        query.setParameter("username", user.getName());
-        query.setParameter("password", Encryptor.encrypt(user.getPassword()));
-        return  (User) query.uniqueResult();
+        user.setStatus("online");
+        session.update(user);
+    }
+
+    @Override
+    public void setStatusOffline(User user) {
+        Session session = sessionFactory.getCurrentSession();
+        System.out.println("qwerty: " + user);
+        User user1 = getById(user.getId());
+        user1.setStatus("offline");
+        session.update(user1);
+    }
+
+    @Override
+    public List<User> allOnlineUsers() {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where status=:status");
+        query.setParameter("status", "online");
+        return query.list();
     }
 }
