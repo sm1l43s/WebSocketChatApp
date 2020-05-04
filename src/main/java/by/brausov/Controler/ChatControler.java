@@ -33,7 +33,7 @@ public class ChatControler {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/chat", method = RequestMethod.POST)
+    @RequestMapping(value = "/chat/ajax", method = RequestMethod.POST)
     public String getAllUsers() {
         Gson gson = new Gson();
         List<User> userList = userService.allOnlineUsers();

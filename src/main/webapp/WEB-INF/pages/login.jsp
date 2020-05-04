@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="login">
-    <c:if test="">
+    <c:if test="${error} == true">
         <div class="alert">
             Неверный логин или пароль.
         </div>

@@ -3,12 +3,10 @@ package by.brausov.Controler;
 import by.brausov.model.entities.Role;
 import by.brausov.model.entities.User;
 import by.brausov.service.UserService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -56,6 +54,14 @@ public class UserController {
         User user = userService.getById(id);
         userService.delete(user);
         return modelAndView;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/chat/closed", method = RequestMethod.POST)
+    public String setStatusOffline(@RequestParam(value = "id") String id) {
+        User user = userService.getById(Integer.parseInt(id));
+        userService.setStatusOffline(user);
+        return "redirect:/logout";
     }
 
 }

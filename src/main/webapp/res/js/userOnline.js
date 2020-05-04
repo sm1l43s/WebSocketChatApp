@@ -1,13 +1,13 @@
-window.addEventListener("load", init(), ajaxTest());
+window.addEventListener("load", init(), ajaxRequest());
 
 function init() {
-    setInterval(ajaxTest, 10000);
+    setInterval(ajaxRequest, 10000);
 }
 
-function ajaxTest() {
+function ajaxRequest() {
     $.ajax({
         type : 'POST',
-        url : 'chat',//this is url mapping for controller
+        url : 'chat/ajax',//this is url mapping for controller
         success : function(response) {
             let users = JSON.parse(response);
             setCountOnlineUsers(users.length);
@@ -15,7 +15,7 @@ function ajaxTest() {
             //this response is list of object commming from server
         },
         error : function() {
-            alert("opps error occured");
+            console.log("Error ajax");
         }
     });
 }

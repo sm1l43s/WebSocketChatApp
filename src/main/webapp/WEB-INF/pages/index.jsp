@@ -6,12 +6,25 @@
     <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
+
 <body>
+
+<script>
+    window.onunload = function () {
+        ajaxRequest();
+    }
+</script>
 
 <div class="wrapper">
     <div class="side-panel">
         <div class="userInfoItems">
             <h2>Информация о профиле</h2>
+            <input type="hidden" class="user_id" value="${user.id}">
+        </div>
+
+        <div class="userInfoItems">
+            <span>Е-mail: </span>
+            <span>${user.email}</span>
         </div>
 
         <div class="userInfoItems">
@@ -48,9 +61,11 @@
             </c:if>
 
             <span>
-                <c:url value="/logout" var="var"/>
-                <form action="${var}" method="post" >
+                <c:url value="/logout" var="logout"/>
+                <form action="${logout}" method="POST" >
                     <input type="hidden" value="${user.id}">
+                    <input type="hidden" value="${user.email}">
+                    <input type="hidden" value="${user.name}">
                     <input id="logout" type="submit" value="Выйти"/>
                 </form>
             </span>
@@ -90,12 +105,10 @@
         <span>Powered by Denis Brausov</span>
     </div>
 </footer>
-
-
 </body>
 
 <script src="<c:url value="/res/js/chat.js"/>"></script>
 <script src="<c:url value="/res/js/userOnline.js"/>"></script>
 <script src="<c:url value="/res/js/sidePanel.js"/>"></script>
-
+<script src="<c:url value="/res/js/closeTab.js"/>"></script>
 </html>
