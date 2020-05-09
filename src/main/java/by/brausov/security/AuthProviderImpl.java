@@ -1,21 +1,20 @@
 package by.brausov.security;
 
-import by.brausov.Controler.ChatControler;
 import by.brausov.model.entities.User;
 import by.brausov.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.security.authentication.AuthenticationProvider;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 @Component
 public class AuthProviderImpl implements AuthenticationProvider {
@@ -45,8 +44,16 @@ public class AuthProviderImpl implements AuthenticationProvider {
             throw new BadCredentialsException("Bad credentials");
         }
 
+        if(user.getBlocked()) {
+            throw new BadCredentialsException("you are blocked");
+        }
+
+        Collection<GrantedAuthority> authorities =
+                AuthorityUtils.createAuthorityList("ROLE_" + user.getRole());
+
         userService.setStatusOnline(user);
-        List<GrantedAuthority> authorities = new ArrayList<>();
+
+
         return new UsernamePasswordAuthenticationToken(user, null, authorities);
     }
 

@@ -1,6 +1,7 @@
 package by.brausov.service;
 
 import by.brausov.dao.UserDAO;
+import by.brausov.model.entities.Role;
 import by.brausov.model.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,31 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<User> allUsers() {
         return userDAO.allUsers();
+    }
+
+    @Transactional
+    public List<User> allUsers(int page) {
+        return userDAO.allUsers(page);
+    }
+
+    @Transactional
+    public List<User> allUserByRole(Role role) {
+        return userDAO.allUserByRole(role);
+    }
+
+    @Transactional
+    public List<User> allUserByStatus(String status) {
+        return userDAO.allUserByStatus(status);
+    }
+
+    @Transactional
+    public List<User> allUserByBlocked(Boolean blocked) {
+        return userDAO.allUserByBlocked(blocked);
+    }
+
+    @Transactional
+    public List<User> search(String string) {
+        return userDAO.search(string);
     }
 
     @Transactional
@@ -58,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public List<User> allOnlineUsers() {
-        return userDAO.allOnlineUsers();
+    public int usersCount() {
+        return userDAO.usersCount();
     }
 }

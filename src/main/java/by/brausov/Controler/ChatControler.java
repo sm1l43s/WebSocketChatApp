@@ -36,14 +36,14 @@ public class ChatControler {
     @RequestMapping(value = "/chat/ajax", method = RequestMethod.POST)
     public String getAllUsers() {
         Gson gson = new Gson();
-        List<User> userList = userService.allOnlineUsers();
+        List<User> userList = userService.allUserByStatus("online");
         ArrayList list = new ArrayList();
 
         for (User user: userList) {
             String str = user.toString();
             list.add(str);
         }
-
         return gson.toJson(list);
     }
+
 }

@@ -4,90 +4,32 @@
 <head>
     <title>Веб приложение "Чат"</title>
     <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="<c:url value="/res/fontawesome-free-5.13.0-web/css/all.min.css"/>" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
-
-<script>
-    window.onunload = function () {
-        ajaxRequest();
-    }
-</script>
-
 <div class="wrapper">
-    <div class="side-panel">
-        <div class="userInfoItems">
-            <h2>Информация о профиле</h2>
-            <input type="hidden" class="user_id" value="${user.id}">
-        </div>
 
-        <div class="userInfoItems">
-            <span>Е-mail: </span>
-            <span>${user.email}</span>
-        </div>
+    <c:import url="parts/profile.jsp"/>
 
-        <div class="userInfoItems">
-            <span>Логин: </span>
-            <span>${user.name}</span>
-        </div>
-
-        <div class="userInfoItems">
-            <span>Роль: </span>
-            <span>${user.role.roleName}</span>
-        </div>
-
-        <div class="userInfoItems">
-            <span>Статус: </span>
-            <span>${user.status}</span>
-        </div>
-
-        <div class="userInfoItems">
-            <span><a href="/edit/${user.id}">изменить данные профиля</a></span>
-        </div>
-    </div>
-
-    <header>
-        <div class="logo">
-            <div><a href="/chat"><span>.Web</span>SocketChat</a></div>
-        </div>
-
-        <nav>
-            <span><a href="/chat">Чат</a></span>
-            <span><a href="#" class="sidePanel">Профиль</a></span>
-            <span><a href="#">Контакты</a></span>
-            <c:if test="${user.role.roleName.equals('admin')}">
-                <span><a href="#">Админ панель</a></span>
-            </c:if>
-
-            <span>
-                <c:url value="/logout" var="logout"/>
-                <form action="${logout}" method="POST" >
-                    <input type="hidden" value="${user.id}">
-                    <input type="hidden" value="${user.email}">
-                    <input type="hidden" value="${user.name}">
-                    <input id="logout" type="submit" value="Выйти"/>
-                </form>
-            </span>
-        </nav>
-    </header>
+    <c:import url="parts/header.jsp"/>
 
     <main>
         <div class="chatWrapper">
             <div class="chatBox">
-                <div class="messages"></div>
-
+                <div class="messages">
+                </div>
                 <div class="inputMsg">
                     <input type="text" class="msg">
                     <button>Отправить</button>
                 </div>
 
                 <div class="start">
-                    <input type="hidden" class="username" value="${user.name}">
+                    <input type="hidden" class="username_chat" value="${user.name}">
                     <button id="start">Присоединиться к чату</button>
                 </div>
             </div>
-
+            <input type="hidden" id="role_user" value="${user.role}">
         </div>
 
         <aside class="sidebar">
@@ -100,15 +42,11 @@
     </main>
 </div>
 
-<footer>
-    <div>
-        <span>Powered by Denis Brausov</span>
-    </div>
-</footer>
-</body>
+<c:import url="parts/footer.jsp"/>
 
+</body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="<c:url value="/res/js/chat.js"/>"></script>
 <script src="<c:url value="/res/js/userOnline.js"/>"></script>
 <script src="<c:url value="/res/js/sidePanel.js"/>"></script>
-<script src="<c:url value="/res/js/closeTab.js"/>"></script>
 </html>

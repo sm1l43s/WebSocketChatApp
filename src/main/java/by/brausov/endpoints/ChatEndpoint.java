@@ -15,13 +15,15 @@ import java.util.List;
 public class ChatEndpoint {
 
     private Session session = null;
+    private int id = 0;
     private String username = "guest";
     private static List<Session> sessionList = new LinkedList<Session>();
 
     @OnOpen
     public void onOpen(Session session, @PathParam("user") String username) {
         this.session = session;
-        this.username = username;
+        this.username = username.substring(0, username.indexOf("_"));
+        this.id = Integer.parseInt(username.substring(username.indexOf("_") + 1));
         sessionList.add(session);
     }
 
@@ -37,6 +39,7 @@ public class ChatEndpoint {
 
     @OnMessage
     public void onMessage(Session session, final Message msg) {
+        msg.setId(this.id);
         msg.setName(this.username);
         sessionList.forEach(s->{
             if(s == this.session) return;

@@ -1,53 +1,13 @@
 package by.brausov.model.entities;
 
-import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
-@Entity
-@Table(name = "role")
-public class Role {
+public enum Role implements GrantedAuthority {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "role_name")
-    private String roleName;
-
-    @OneToOne(mappedBy = "role", targetEntity = User.class)
-    private User user;
-
-    public Role() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    USER, ADMIN, MODERATOR;
 
     @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleName='" + roleName + '\'' +
-                '}';
+    public String getAuthority() {
+        return name();
     }
 }

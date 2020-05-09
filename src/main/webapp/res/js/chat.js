@@ -6,6 +6,9 @@ let chatUnit = {
         this.startBtn = this.startBox.querySelector("button");
         this.nameInput = this.startBox.querySelector("input");
 
+        this.roleUser = document.querySelector("#role_user").value;
+        this.userId = document.querySelector(".user_id").value;
+
         this.msgTextArea = document.querySelector(".msg");
         this.chatMessageContainer = this.chatBox.querySelector(".messages");
         this.btn = document.querySelector(".inputMsg button");
@@ -30,6 +33,7 @@ let chatUnit = {
 
     send() {
         this.sendMessage({
+            id: this.userId,
             name: this.name,
             text: this.msgTextArea.value,
         });
@@ -40,35 +44,59 @@ let chatUnit = {
     },
 
     onMessage(parseMsg) {
-        let msgBlock = document.createElement("div");
-        msgBlock.className = "msg";
+        let message = document.createElement("div");
+        message.className = "message";
 
         if(parseMsg.name == "I'm") {
-            msgBlock.classList.add("me");
+            message.classList.add("me");
         } else {
-            msgBlock.classList.add("anotherUser");
+            message.classList.add("another_user");
         }
 
-        let fromBlock = document.createElement("span");
-        fromBlock.className = "from";
-        fromBlock.innerText = parseMsg.name;
+        let from = document.createElement("div");
+        from.className = "from";
+        from.innerText = parseMsg.name.trim().substring(0, 1);
 
-        let textBlock = document.createElement("span");
-        textBlock.className = "text";
-        textBlock.innerText = parseMsg.text;
+        let context = document.createElement("div");
+        context.className = "context";
+
+        let text_message = document.createElement("span");
+        text_message.className = "text_message";
+        text_message.innerText = parseMsg.text;
 
         let date = new Date();
-        let timeBlock = document.createElement("span");
-        timeBlock.className = "timeBlock";
-        timeBlock.innerText = date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-        msgBlock.appendChild(fromBlock);
-        msgBlock.appendChild(textBlock);
-        msgBlock.appendChild(timeBlock);
+        let str_for_time = "";
 
-        this.chatMessageContainer.prepend(msgBlock);
+        if (this.roleUser == "ADMIN" || this.roleUser == "MODERATOR") {
+            str_for_time = "Отправлено: "
+                + "<a href='/edit_moderator/" + parseMsg.id + "' class='user_chat'>"
+                + parseMsg.name
+                + "   " + "<i class=\"fas fa-link\"></i>" + "   "
+                + "</a>"
+                + " в "
+                + "<i class=\"fas fa-clock\"></i>"
+                + " " + date.getHours()
+                + ":" + date.getMinutes();
+        } else {
+            str_for_time = "Отправлено: "
+                + parseMsg.name
+                + " в "
+                + "<i class=\"fas fa-clock\"></i>"
+                + " " + date.getHours()
+                + ":" + date.getMinutes();
+        }
 
+        let time = document.createElement("time");
+        time.innerHTML = str_for_time;
 
+        context.appendChild(text_message);
+        context.appendChild(time);
+
+        message.appendChild(from);
+        message.appendChild(context);
+
+        this.chatMessageContainer.prepend(message);
     },
 
     onClose() {
@@ -77,13 +105,13 @@ let chatUnit = {
 
     sendMessage(msg) {
         this.ws.send(JSON.stringify(msg));
-        this.onMessage({name: "I'm", text:msg.text});
+        this.onMessage({id: this.userId, name: "I'm", text:msg.text});
         this.msgTextArea.value = "";
     },
 
     openSocket() {
         this.name = this.nameInput.value;
-        this.ws = new WebSocket("ws://localhost:8080/chat/" + this.name);
+        this.ws = new WebSocket("ws://localhost:8080/chat/" + this.name + "_" + this.userId);
         this.ws.onopen = () => this.onOpenSock();
         this.ws.onmessage = (e) => this.onMessage(JSON.parse(e.data));
         this.ws.onclose = () => this.onClose();

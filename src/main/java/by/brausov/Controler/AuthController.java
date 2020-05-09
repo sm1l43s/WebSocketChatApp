@@ -5,10 +5,10 @@ import by.brausov.model.entities.User;
 import by.brausov.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,17 +48,45 @@ public class AuthController {
     public ModelAndView addUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/");
-        Role role = new Role();
-        role.setId(1);
-        user.setRole(role);
+        user.setRole(Role.USER);
         userService.add(user);
         return modelAndView;
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
-    public String logoutPage(@ModelAttribute("user") User user) {
-        System.out.println("exit exit exit exit");
-        userService.setStatusOffline(user);
+    @RequestMapping("/login")
+    public String login(@RequestParam(name = "error", required = false) Boolean error,
+                        @RequestParam(name = "logout", required = false) Boolean logout,
+                        Model model) {
+
+        if (Boolean.TRUE.equals(error)) {
+            model.addAttribute("error", true);
+        }
+
+        if (Boolean.TRUE.equals(logout)) {
+            model.addAttribute("logout", true);
+        }
+
+        return "/login";
+    }
+
+    @RequestMapping(value="/customLogout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            userService.setStatusOffline(userService.getByEmail(getEmail(auth)));
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
         return "redirect:/logout";
     }
+
+    private String getEmail(Authentication authentication) {
+
+        int posStart = authentication.getName().indexOf("email='");
+        int posFinish = authentication.getName().indexOf("name='");
+        // email=' -> 7 symbol
+        // ...(', ) name=' -> in (...) 3 symbol
+        return authentication.getName().substring(posStart + 7, posFinish - 3).trim();
+    }
+
 }

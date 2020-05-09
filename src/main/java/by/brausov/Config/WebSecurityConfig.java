@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,19 +22,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/", "/add", "/login").anonymous()
-                .antMatchers("/chat").authenticated()
-                .and().csrf().disable()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .usernameParameter("email")
+                    .authorizeRequests()
+                    .antMatchers("/", "/add", "/login").anonymous()
+                    .antMatchers("/chat", "/edit/**").authenticated()
+                    .antMatchers("/admin_panel/**", "/edit_admin/**", "/delete/**").hasRole("ADMIN")
+                    .antMatchers("/edit_moderator/**").hasAnyRole("MODERATOR", "ADMIN")
                 .and()
-                .exceptionHandling()
-                .accessDeniedPage("/chat")
+                    .csrf()
+                    .disable()
+                    .formLogin()
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .failureUrl("/login?error=true")
+                    .usernameParameter("email")
                 .and()
-                .logout();
+                    .exceptionHandling()
+                    .accessDeniedPage("/chat")
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/login?logout=true")
+                    .invalidateHttpSession(true);
     }
 
     @Override
@@ -47,4 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

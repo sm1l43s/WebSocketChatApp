@@ -22,19 +22,22 @@ public class User {
     @Column(name = "status")
     private String status;
 
-    @OneToOne
-    @JoinColumn(name = "role_id")
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
+
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
     public User() {
 
     }
 
-    public User(String email, String name, String password, String status, Role role) {
+    public User(String email, String name, String password, String status, Boolean isBlocked, Role role) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.status = status;
+        this.isBlocked = isBlocked;
         this.role = role;
     }
 
@@ -78,6 +81,14 @@ public class User {
         this.status = status;
     }
 
+    public Boolean getBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        isBlocked = blocked;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -94,7 +105,8 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", status='" + status + '\'' +
-                ", role=" + role.getRoleName() +
+                ", isBlocked=" + isBlocked +
+                ", role=" + role +
                 '}';
     }
 }

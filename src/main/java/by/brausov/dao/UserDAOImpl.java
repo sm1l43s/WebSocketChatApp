@@ -1,5 +1,6 @@
 package by.brausov.dao;
 
+import by.brausov.model.entities.Role;
 import by.brausov.model.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -35,9 +36,48 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public List<User> allUsers(int page) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from User").setFirstResult(10 * (page - 1)).setMaxResults(10).list();
+    }
+
+    @Override
+    public List<User> allUserByRole(Role role) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where role=:roleName");
+        query.setParameter("roleName", role);
+        return query.list();
+    }
+
+    @Override
+    public List<User> allUserByStatus(String status) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where status=:status");
+        query.setParameter("status", status);
+        return query.list();
+    }
+
+    @Override
+    public List<User> allUserByBlocked(Boolean blocked) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where isBlocked=:status");
+        query.setParameter("status", blocked);
+        return query.list();
+    }
+
+    @Override
+    public List<User> search(String string) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from User where name LIKE :name or email like :name");
+        query.setParameter("name", "%" + string + "%");
+        return query.list();
+    }
+
+    @Override
     public void add(User user) {
         Session session = sessionFactory.getCurrentSession();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setBlocked(Boolean.FALSE);
         session.persist(user);
     }
 
@@ -49,10 +89,8 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void edit(User user) {
-       User user1 = getById(user.getId());
-       user1.setName(user.getName());
        Session session = sessionFactory.getCurrentSession();
-       session.update(user1);
+       session.update(user);
 
     }
 
@@ -65,7 +103,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getByEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from User user left join fetch user.role where user.email = :email");
+        Query query = session.createQuery("from User user where user.email = :email");
         query.setParameter("email", email);
         return  (User) query.uniqueResult();
     }
@@ -87,10 +125,8 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> allOnlineUsers() {
+    public int usersCount() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from User where status=:status");
-        query.setParameter("status", "online");
-        return query.list();
+        return session.createQuery("select count(*) from User", Number.class).getSingleResult().intValue();
     }
 }
