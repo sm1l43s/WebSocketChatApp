@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Админ панель</title>
+    <link rel="shortcut icon" href="<c:url value="/res/img/icon.png"/>" type="image/png">
     <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
     <link href="<c:url value="/res/fontawesome-free-5.13.0-web/css/all.min.css"/>" rel="stylesheet" type="text/css"/>
 </head>
@@ -17,22 +18,22 @@
             <div class="filter">
                 <div class="search">
                     <input type="text" class="inp_search" placeholder="Поиск по логину или e-mail">
-                    <a href="/admin_panel?search=" id="searchBtn"><i class="fas fa-search"></i></a>
+                    <a href="/chatApp/admin_panel?search=" id="searchBtn"><i class="fas fa-search"></i></a>
                 </div>
                 <div class="dropdown">
                     <button onclick="myFunction()" class="dropbtn">Фильтр <i class="fas fa-filter"></i></button>
                     <div id="myDropdown" class="dropdown-content">
-                        <a href="/admin_panel">Без фильтра</a>
+                        <a href="/chatApp/admin_panel">Без фильтра</a>
                         <span>По роли:</span>
-                        <a href="/admin_panel?filter=ADMIN">Администратор</a>
-                        <a href="/admin_panel?filter=MODERATOR">Модератор</a>
-                        <a href="/admin_panel?filter=USER">Пользователь</a>
+                        <a href="/chatApp/admin_panel?filter=ADMIN">Администратор</a>
+                        <a href="/chatApp/admin_panel?filter=MODERATOR">Модератор</a>
+                        <a href="/chatApp/admin_panel?filter=USER">Пользователь</a>
                         <span>По блокировки аккаунта</span>
-                        <a href="/admin_panel?filter=true">Заблокирован</a>
-                        <a href="/admin_panel?filter=false">Разблокирован</a>
+                        <a href="/chatApp/admin_panel?filter=true">Заблокирован</a>
+                        <a href="/chatApp/admin_panel?filter=false">Разблокирован</a>
                         <span>По активности:</span>
-                        <a href="/admin_panel?filter=online">Онлайн</a>
-                        <a href="/admin_panel?filter=offline">Оффлайн</a>
+                        <a href="/chatApp/admin_panel?filter=online">Онлайн</a>
+                        <a href="/chatApp/admin_panel?filter=offline">Оффлайн</a>
                     </div>
                 </div>
             </div>
@@ -59,8 +60,8 @@
                         <td>${user.status}</td>
                         <td>${user.blocked}</td>
                         <td>
-                            <a href="/edit_admin/${user.id}" class="edit"><i class="fas fa-user-edit"></i></a>
-                            <a href="/delete_admin/${user.id}" class="remove"><i class="fas fa-trash-alt"></i></a>
+                            <a href="/chatApp/edit_admin/${user.id}" class="edit"><i class="fas fa-user-edit"></i></a>
+                            <a href="/chatApp/delete_admin/${user.id}" class="remove"><i class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                     </c:forEach>
@@ -70,7 +71,7 @@
             <div class="page_count">
                 <c:forEach begin="1" end="${pagesCount}" step="1" varStatus="i">
                     <div class="page">
-                    <c:url value="/admin_panel" var="url">
+                    <c:url value="/chatApp/admin_panel" var="url">
                         <c:param name="page" value="${i.index}"/>
                     </c:url>
                     <a href="${url}">${i.index}</a>

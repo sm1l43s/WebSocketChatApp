@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Веб приложение "Чат"</title>
+    <link rel="shortcut icon" href="<c:url value="/res/img/icon.png"/>" type="image/png">
     <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
     <link href="<c:url value="/res/fontawesome-free-5.13.0-web/css/all.min.css"/>" rel="stylesheet" type="text/css"/>
 </head>

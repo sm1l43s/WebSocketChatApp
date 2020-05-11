@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Add user</title>
+    <link rel="shortcut icon" href="<c:url value="/res/img/icon.png"/>" type="image/png">
     <link href="<c:url value="/res/css/style.css"/>" rel="stylesheet" type="text/css"/>
 </head>
 <body>

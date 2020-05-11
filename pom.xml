@@ -28,7 +28,7 @@
                 <configuration>
                     <url>http://142.93.236.158:8080/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/chatApp</path>
+                    <path>/chat</path>
                 </configuration>
             </plugin>
 
@@ -117,9 +117,6 @@
             <artifactId>spring-security-config</artifactId>
             <version>5.3.1.RELEASE</version>
         </dependency>
-
-
-
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>

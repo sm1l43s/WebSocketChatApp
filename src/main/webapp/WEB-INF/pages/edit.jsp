@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Редактиование профиля</title>
+    <link rel="shortcut icon" href="<c:url value="/res/img/icon.png"/>" type="image/png">
     <link rel="stylesheet"  href="<c:url value="/res/css/style.css"/>">
 </head>
 <body>
@@ -22,7 +23,7 @@
         <input type="hidden" name="password" value="${user.password}">
         <input type="hidden" name="blocked" value="${user.blocked}">
         <input type="submit" value="Сохранить изменения">
-        <a href="/chat" class="back">Вернуться назад</a>
+        <a href="/chatApp/chat" class="back">Вернуться назад</a>
     </form>
 </div>
 </body>

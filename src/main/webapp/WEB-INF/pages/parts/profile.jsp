@@ -26,6 +26,6 @@
     </div>
 
     <div class="userInfoItems">
-        <span><a href="/edit/${user.id}">изменить данные профиля</a></span>
+        <span><a href="/chatApp/edit/${user.id}">изменить данные профиля</a></span>
     </div>
 </div>

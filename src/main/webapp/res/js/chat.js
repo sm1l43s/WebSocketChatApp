@@ -70,7 +70,7 @@ let chatUnit = {
 
         if (this.roleUser == "ADMIN" || this.roleUser == "MODERATOR") {
             str_for_time = "Отправлено: "
-                + "<a href='/edit_moderator/" + parseMsg.id + "' class='user_chat'>"
+                + "<a href='/chatApp/edit_moderator/" + parseMsg.id + "' class='user_chat'>"
                 + parseMsg.name
                 + "   " + "<i class=\"fas fa-link\"></i>" + "   "
                 + "</a>"
@@ -111,7 +111,7 @@ let chatUnit = {
 
     openSocket() {
         this.name = this.nameInput.value;
-        this.ws = new WebSocket("ws://localhost:8080/chat/" + this.name + "_" + this.userId);
+        this.ws = new WebSocket("ws://localhost:8080/chatApp/chat/" + this.name + "_" + this.userId);
         this.ws.onopen = () => this.onOpenSock();
         this.ws.onmessage = (e) => this.onMessage(JSON.parse(e.data));
         this.ws.onclose = () => this.onClose();
