@@ -1,6 +1,7 @@
 package by.brausov.Controler;
 
 import by.brausov.model.entities.User;
+import by.brausov.service.HttpSessionsService;
 import by.brausov.service.UserService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,12 @@ public class ChatControler {
         this.userService = userService;
     }
 
+    @Autowired
+    public HttpSessionsService httpSessionsService;
+
     @RequestMapping(value = "/chat", method = RequestMethod.GET)
-    public ModelAndView chat(@AuthenticationPrincipal User user) {
+    public ModelAndView chat(@AuthenticationPrincipal User user, HttpSession session) {
+        httpSessionsService.add(user.getId(), session);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         modelAndView.addObject("user", user);
@@ -45,5 +51,4 @@ public class ChatControler {
         }
         return gson.toJson(list);
     }
-
 }

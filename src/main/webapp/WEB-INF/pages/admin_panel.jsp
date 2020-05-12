@@ -71,7 +71,7 @@
             <div class="page_count">
                 <c:forEach begin="1" end="${pagesCount}" step="1" varStatus="i">
                     <div class="page">
-                    <c:url value="/chatApp/admin_panel" var="url">
+                    <c:url value="/admin_panel" var="url">
                         <c:param name="page" value="${i.index}"/>
                     </c:url>
                     <a href="${url}">${i.index}</a>

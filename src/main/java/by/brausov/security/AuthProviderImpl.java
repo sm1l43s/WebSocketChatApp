@@ -53,7 +53,6 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
         userService.setStatusOnline(user);
 
-
         return new UsernamePasswordAuthenticationToken(user, null, authorities);
     }
 

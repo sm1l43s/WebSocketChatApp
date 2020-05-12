@@ -24,8 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                     .authorizeRequests()
                     .antMatchers("/", "/add", "/login").anonymous()
-                    .antMatchers("/chat", "/edit/**").authenticated()
-                    .antMatchers("/admin_panel/**", "/edit_admin/**", "/delete/**").hasRole("ADMIN")
+                    .antMatchers("/chat", "/edit/**", "/news").authenticated()
+                    .antMatchers("/admin_panel/**", "/edit_admin/**", "/delete/**", "/newsAdd", "/delete_post/**", "/edit_post/**")
+                        .hasRole("ADMIN")
                     .antMatchers("/edit_moderator/**").hasAnyRole("MODERATOR", "ADMIN")
                 .and()
                     .csrf()

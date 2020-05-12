@@ -2,6 +2,7 @@ package by.brausov.Controler;
 
 import by.brausov.model.entities.Role;
 import by.brausov.model.entities.User;
+import by.brausov.service.HttpSessionsService;
 import by.brausov.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +22,9 @@ public class AdminController {
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
+    @Autowired
+    public HttpSessionsService httpSessionsService;
 
     @RequestMapping(value = "/admin_panel", method = RequestMethod.GET)
     public ModelAndView usersList(@RequestParam(defaultValue = "1", required = false) int page,
@@ -77,6 +81,10 @@ public class AdminController {
     public ModelAndView editUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin_panel?page=" + this.page);
+        if (user.getBlocked()) {
+            destroySession(user.getId());
+            user.setStatus("offline");
+        }
         userService.edit(user);
         return modelAndView;
     }
@@ -94,6 +102,7 @@ public class AdminController {
     public ModelAndView editUserModerator(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/chat");
+        destroySession(user.getId());
         userService.edit(user);
         return modelAndView;
     }
@@ -103,8 +112,15 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin_panel?page=" + this.page);
         User user = userService.getById(id);
+        destroySession(user.getId());
         userService.delete(user);
         return modelAndView;
+    }
+
+    private void destroySession(int userId) {
+        userService.setStatusOffline(userService.getById(userId));
+        httpSessionsService.getUserAndSession().get(userId).invalidate();
+        httpSessionsService.getUserAndSession().remove(userId);
     }
 
 }

@@ -7,12 +7,12 @@
     <nav>
         <span><a href="/chatApp/chat">Чат</a></span>
         <span><a href="#" class="sidePanel">Профиль</a></span>
-        <span><a href="#">Контакты</a></span>
+        <span><a href="/chatApp/news">Новости</a></span>
         <c:if test="${user.role == 'ADMIN'}">
             <span><a href="/chatApp/admin_panel">Админ панель</a></span>
         </c:if>
-        <span>
-            <a href="/chatApp/customLogout" id="logout">Выйти</a>
+        <span id="logout">
+            <a href="/chatApp/customLogout" >Выйти <i class="fas fa-sign-out-alt"></i></a>
         </span>
     </nav>
 </header>

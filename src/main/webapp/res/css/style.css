@@ -222,19 +222,17 @@ header .logo:hover span {
     color: #ae3361;
 }
 
-header #logout {
-    line-height: 50px;
-    background-color: #ae3361;
-    color: #eeeeee;
-    padding: 0 10px 0 10px;
-    cursor: pointer;
-    transition: 0.4s ease-in-out;
+header #logout a {
+    background-color: #d44179;
     border-radius: 5px;
+    padding: 10px;
+    text-transform: none;
+    text-decoration: none;
+    transition: 0.4s ease-in-out;
 }
 
-header span:hover #logout {
-    background-color: #d44179;
-    box-shadow: 0 5px 0 #4b1725;
+header #logout:hover a {
+    background-color: #ae3361;
 }
 
 main {
@@ -489,6 +487,10 @@ aside {
     background-color: #9c334f;
 }
 
+.hiddenBlock {
+    height: 300px;
+    background-color: #4CAF50;
+}
 
 
 /*admin panel*/
@@ -768,7 +770,152 @@ select {
     border: 1px solid #4CAF50;
 }
 
+/* news */
 
+.wrapperPost {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.postWrapper {
+    width: 70%;
+    height: auto;
+}
+
+.wrapperPost {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.postWrapper .posts {
+    display: flex;
+    flex-direction: column;
+}
+
+.posts .post {
+    display: flex;
+    flex-direction: column;
+    background-color: #eeeeee;
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    transform: scale(0.95);
+}
+
+.post .title_post {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+}
+
+.post .description_post {
+    border-left: 2px solid #d44179;
+    padding: 10px;
+    text-align: justify;
+    font-size: 1em;
+    border-radius: 10px;
+}
+
+.post .sender_post {
+    text-align: right;
+    font-size: 0.8em;
+    padding: 5px 15px;
+}
+
+.action_post {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.action_post a {
+    font-size: 0.8em;
+}
+
+.action_post:first-child a{
+    color: #0e911c;
+}
+
+.action_post:last-child a{
+    color: #ae3361;
+}
+
+.addPost {
+    width: 30%;
+    min-height: 400px;
+    height: auto;
+    border-radius: 10px;
+    background-color: #eeeeee;
+}
+
+.addPost label {
+    display: block;
+    padding: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.addPost input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    height: 50px;
+}
+
+.addPost textarea {
+    width: 100%;
+    padding: 10px;
+    height: 200px;
+    resize: none;
+}
+
+.addPost span {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#add_post, #reset {
+    display: inline-block;
+    margin: 0 auto;
+    width: 40%;
+    padding: 5px;
+    height: 30px;
+    background-color: #4CAF50;
+    cursor: pointer;
+    transition: 0.4s ease-in;
+}
+
+#reset {
+    background-color: #d44179;
+    color: #eeeeee;
+}
+
+#add_post:hover {
+    background-color: #0e911c;
+}
+
+#reset:hover {
+    background-color: #ae3361;
+}
+
+/* edit post */
+
+.registration textarea {
+    resize: none;
+    width: 450px;
+    height: 250px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.edit_post input {
+    width: 450px !important;
+}
 /* footer */
 
 footer {

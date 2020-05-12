@@ -50,4 +50,5 @@
 <script src="<c:url value="/res/js/chat.js"/>"></script>
 <script src="<c:url value="/res/js/userOnline.js"/>"></script>
 <script src="<c:url value="/res/js/sidePanel.js"/>"></script>
+
 </html>
