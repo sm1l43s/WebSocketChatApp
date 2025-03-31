@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs/lib/stomp.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input, button { margin: 5px; padding: 8px; }
+        #messages { margin-top: 20px; border: 1px solid #ddd; padding: 10px; min-height: 100px; }
+    </style>
+</head>
+<body>
+<h1>WebSocket with SockJS and STOMP</h1>
+
+<input type="text" id="token" placeholder="Enter JWT Token" size="50"/>
+<input type="number" id="senderId" placeholder="Sender ID" />
+<input type="number" id="recipientId" placeholder="Recipient ID" />
+<input type="text" id="content" placeholder="Message" size="50"/>
+<button onclick="connect()">Connect</button>
+<button onclick="sendMessage()">Send</button>
+<div id="messages"></div>
+
+<script>
+    let stompClient = null;
+
+    function connect() {
+        const jwtToken = document.getElementById('token').value;
+
+        const wsUrl = `http://localhost:9091/ws?token=${encodeURIComponent('Bearer_' + jwtToken)}`;
+
+        const socket = new SockJS(wsUrl, null, {
+            transports: ['websocket', 'xhr-streaming'],
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`,
+                'X-Auth-Token': jwtToken
+            }
+        });
+
+        stompClient = Stomp.over(socket);
+        stompClient.debug = () => {};
+
+        stompClient.connect({},
+            () => console.log("Connected!"),
+            (error) => console.error("Connection error:", error)
+        );
+    }
+
+    function sendMessage() {
+        if (!stompClient || !stompClient.connected) {
+            alert("Not connected to WebSocket!");
+            return;
+        }
+
+        const senderId = parseInt(document.getElementById('senderId').value, 10);
+        const recipientId = parseInt(document.getElementById('recipientId').value, 10);
+        const content = document.getElementById('content').value;
+        const jwtToken = document.getElementById('token').value;
+
+        if (isNaN(senderId) || isNaN(recipientId) || !content || !jwtToken) {
+            alert("Please fill in all fields with valid input!");
+            return;
+        }
+
+        const chatMessage = {
+            senderId: senderId,
+            recipientId: recipientId,
+            content: content,
+        };
+
+        stompClient.send(
+            '/app/chat',
+            { 'Authorization': 'Bearer ' + jwtToken },
+            JSON.stringify(chatMessage)
+        );
+        document.getElementById('content').value = '';
+    }
+
+    window.onbeforeunload = function() {
+        if (stompClient && stompClient.connected) {
+            stompClient.disconnect(() => {
+                console.log('Disconnected');
+            });
+        }
+    };
+</script>
+</body>
+</html>

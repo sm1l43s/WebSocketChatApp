@@ -1,0 +1,39 @@
+version: '3.9'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+
+  auth_db:
+    image: bitnami/postgresql:17
+    container_name: auth_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRESQL_USERNAME: auth
+      POSTGRESQL_PASSWORD: auth
+      POSTGRESQL_DATABASE: auth_db
+    networks:
+      - app-tier
+
+  post_db:
+    image: bitnami/postgresql:17
+    container_name: post_db
+    ports:
+      - "6666:5432"
+    environment:
+      POSTGRESQL_USERNAME: post
+      POSTGRESQL_PASSWORD: post
+      POSTGRESQL_DATABASE: post_db
+    networks:
+      - app-tier
+
+  chat_db:
+    image: mongo:latest
+    container_name: chat_db
+    ports:
+      - "27017:27017"
+    networks:
+      - app-tier
