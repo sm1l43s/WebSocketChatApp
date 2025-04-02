@@ -2,13 +2,20 @@ package by.tsvetkov.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+/*
+ * Класс, представляющий ответ аутентификации пользователя.
+ */
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class AuthenticationResponse {
+
+    /*
+     * Токен доступа, полученный после успешной аутентификации.
+     */
     private String token;
 }

@@ -1,70 +1,51 @@
 package by.tsvetkov.dto;
 
 import by.tsvetkov.model.Role;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
-@AllArgsConstructor
+/*
+ * Выходной DTO (Data Transfer Object) для представления информации о пользователе.
+ */
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserDto {
 
+    /*
+     * Идентификатор пользователя.
+     */
     private Long id;
 
+    /*
+     * Электронная почта пользователя.
+     * Должна соответствовать формату электронной почты.
+     */
+    @Email(message = "Email должен быть корректным")
+    @NotBlank(message = "Email не должен быть пустым")
     private String email;
 
+    /*
+     * Имя пользователя.
+     * Не должно быть пустым.
+     */
+    @NotBlank(message = "Имя не должно быть пустым")
     private String name;
 
+    /*
+     * Статус пользователя.
+     */
     private String status;
 
+    /*
+     * Данные о блокировке пользователя.
+     * Может быть true, если пользователь заблокирован, иначе false.
+     */
     private Boolean blocked;
 
+    /*
+     * Роль пользователя (например, USER, ADMIN).
+     */
     private Role role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Boolean getBlocked() {
-        return blocked;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

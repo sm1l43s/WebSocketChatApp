@@ -12,7 +12,6 @@ import by.tsvetkov.service.AutheticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AutheticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -32,7 +30,7 @@ public class AuthenticationServiceImpl implements AutheticationService {
             throw new AlreadyExistsException("User with email = " + registerRequest.getEmail() + " already exists");
         }
 
-        User user = userRepository.save(userMapper.toUser(registerRequest, passwordEncoder));
+        User user = userRepository.save(userMapper.toUser(registerRequest));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder().token(jwtToken).build();
     }

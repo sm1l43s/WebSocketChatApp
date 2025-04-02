@@ -23,13 +23,13 @@ public class ChatController {
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
+
         var chatId = chatRoomService
                 .getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true);
         chatMessage.setChatId(chatId.get());
 
         ChatMessage saved = chatMessageService.save(chatMessage);
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipientId().toString(),"/queue/messages",
+        messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId().toString(), "/queue/messages",
                 new ChatNotification(
                         saved.getId(),
                         saved.getSenderId(),
@@ -37,29 +37,25 @@ public class ChatController {
     }
 
     @GetMapping("/messages/{senderId}/{recipientId}/count")
-    public ResponseEntity<Long> countNewMessages(
-            @PathVariable Long senderId,
-            @PathVariable Long recipientId) {
-
+    public ResponseEntity<Long> countNewMessages(@PathVariable Long senderId, @PathVariable Long recipientId) {
         return ResponseEntity
                 .ok(chatMessageService.countNewMessages(senderId, recipientId));
     }
 
     @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<?> findChatMessages ( @PathVariable Long senderId,
-                                                @PathVariable Long recipientId) {
+    public ResponseEntity<?> findChatMessages(@PathVariable Long senderId, @PathVariable Long recipientId) {
         return ResponseEntity
                 .ok(chatMessageService.findChatMessages(senderId, recipientId));
     }
 
     @GetMapping("/messages/{id}")
-    public ResponseEntity<?> findMessage ( @PathVariable Long id) {
+    public ResponseEntity<?> findMessage(@PathVariable Long id) {
         return ResponseEntity
                 .ok(chatMessageService.findById(id));
     }
 
     @GetMapping("/messages")
-    public ResponseEntity<?> findAll () {
+    public ResponseEntity<?> findAll() {
         return ResponseEntity
                 .ok(chatMessageService.findAll());
     }

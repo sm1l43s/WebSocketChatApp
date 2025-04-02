@@ -21,17 +21,13 @@ import java.util.Map;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Component
-
 @RequiredArgsConstructor
 public class AuthHandshakeInterceptor implements HandshakeInterceptor {
 
     private final JwtService jwtService;
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request,
-                                   ServerHttpResponse response,
-                                   WebSocketHandler wsHandler,
-                                   Map<String, Object> attributes) {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
 
         try {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;

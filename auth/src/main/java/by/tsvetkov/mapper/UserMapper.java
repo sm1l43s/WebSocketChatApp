@@ -2,28 +2,30 @@ package by.tsvetkov.mapper;
 
 import by.tsvetkov.dto.RegisterRequest;
 import by.tsvetkov.dto.UserDto;
+import by.tsvetkov.mapper.impl.UserMapperDecorator;
 import by.tsvetkov.model.User;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
 
-    @Mapping(target = "password", expression = "java(encoder.encode(registerRequest.getPassword()))")
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "role", constant = "USER")
-    @Mapping(target = "email", source = "registerRequest.email")
-    @Mapping(target = "name", source = "registerRequest.name")
+    @Mapping(source = "registerRequest.email", target = "email")
+    @Mapping(source = "registerRequest.name", target = "name")
     @Mapping(target = "status", constant = "active")
     @Mapping(target = "blocked", constant = "false")
-    User toUser(RegisterRequest registerRequest, PasswordEncoder encoder);
+    User toUser(RegisterRequest registerRequest);
 
-    @Mapping(target = "id", source = "user.id")
-    @Mapping(target = "email", source = "user.email")
-    @Mapping(target = "name", source = "user.name")
-    @Mapping(target = "status", source = "user.status")
-    @Mapping(target = "blocked", source = "user.blocked")
-    @Mapping(target = "role", source = "user.role")
+    @Mapping(source = "user.id", target = "id")
+    @Mapping(source = "user.email", target = "email")
+    @Mapping(source = "user.name", target = "name")
+    @Mapping(source = "user.status", target = "status")
+    @Mapping(source = "user.blocked", target = "blocked")
+    @Mapping(source = "user.role", target = "role")
     UserDto toUserDto(User user);
 }

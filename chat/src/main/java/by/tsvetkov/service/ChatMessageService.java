@@ -6,6 +6,7 @@ import by.tsvetkov.model.MessageStatus;
 import java.util.List;
 
 public interface ChatMessageService {
+
     ChatMessage save(ChatMessage chatMessage);
 
     long countNewMessages(Long senderId, Long recipientId);

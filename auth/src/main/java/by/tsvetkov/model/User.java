@@ -1,18 +1,33 @@
 package by.tsvetkov.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/*
+ * Класс, представляющий пользователя в системе.
+ * Реализует интерфейс UserDetails для интеграции с Spring Security.
+ */
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "app_user")
 public class User implements UserDetails {
@@ -21,21 +36,38 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
+    /*
+     * Электронная почта пользователя.
+     * Должна быть уникальной.
+     */
     private String email;
 
-    @Column(name = "name")
+    /*
+     * Имя пользователя.
+     */
     private String name;
 
-    @Column(name = "password")
+    /*
+     * Пароль пользователя.
+     */
     private String password;
 
-    @Column(name = "status")
+    /*
+     * Статус пользователя.
+     * Например, может обозначать активность или неактивность.
+     */
     private String status;
 
-    @Column(name = "blocked")
+    /*
+     * Статус блокировки пользователя.
+     * Указывает, заблокирован ли пользователь.
+     */
     private Boolean blocked = false;
 
+    /*
+     * Роль пользователя в системе.
+     * Значение по умолчанию: USER.
+     */
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
@@ -69,60 +101,8 @@ public class User implements UserDetails {
         return true;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Boolean isBlocked() {
-        return blocked;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }
